@@ -68,7 +68,7 @@ function start() {
       },
     ])
     .then(res => {
-      const engineer = new Engineer(res.engineerName, res.engineerId, res.github)
+      const engineer = new Engineer(res.engineerName, res.engineerId, res.engineerEmail, res.github)
       employees.push(engineer);
       cycleQuestion()
     })
