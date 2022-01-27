@@ -8,6 +8,7 @@ const DIST_Dir = path.resolve(__dirname, 'dist');
 const distPath = path.join(DIST_Dir, 'team.html')
 
 const generateHtml = require('./util/generateHtml');
+const { resolve } = require('path');
 const employees = [];
 
 function start() {
@@ -66,9 +67,14 @@ function start() {
         message: 'What is the GitHub username of the engineer?'
       },
     ])
+    .then(res => {
+      const engineer = new Engineer(res.engineerName, res.engineerId, res.github)
+      employees.push(engineer);
+      cycleQuestion()
+    })
   }  
   // makeIntern function
-  function makeManager() {
+  function makeIntern() {
     inquirer.prompt([
       {
         type: 'input',
@@ -91,14 +97,11 @@ function start() {
         message: 'What is the school of the intern?'
       },
     ])
-  }
-  // buildHtml function goes here (Use readme generator fs function as reference)
-  function buildHtml() {
-    if(!fs.existsSync(DIST_Dir)) {
-      fs.mkdirSync(DIST_Dir);
-    }
-
-    fs.writeFileSync(distPath, generateHtml(employees), 'utf-8')
+    .then(res => {
+      const intern = new Intern(res.internName, res.internId, res.internEmail, res.school)
+      employees.push(intern);
+      cycleQuestion()
+    })
   }
 
   function cycleQuestion() {
@@ -110,18 +113,26 @@ function start() {
         choices: ['Engineer', 'Intern', 'Done']
       }
     ])
-    .then(res => {
-      switch(res.teamMember){
-        case 'Engineer':
-          makeEngineer();
-          break;
-        case 'Intern':
-          makeIntern();
-          break;
-        default:
-          buildHtml();
+  .then(res => {
+    switch(res.teamMember){
+      case 'Engineer':
+        makeEngineer();
+        break;
+      case 'Intern':
+        makeIntern();
+        break;
+      case 'Done':
+        buildHtml();
       }
     })
+  }
+
+  // buildHtml function 
+  function buildHtml() {
+    if(!fs.existsSync(DIST_Dir)) {
+      fs.mkdirSync(DIST_Dir);
+    }
+    fs.writeFileSync(distPath, generateHtml(employees), 'utf-8')
   }
 
   makeManager();
