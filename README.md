@@ -8,9 +8,9 @@ This image shows the completed assignment's appearance, and functionality:
 
 ![screenshot of website](./Assets/screenshot.jpg)
 
-## Link to Deployed Site
+## Link to the GitHub Repository
 
-https://knolan18.github.io/10-team-profile-generator/
+https://github.com/knolan18/10-team-profile-generator
 
 ## Link to Screencastify Walkthrough Video
 
